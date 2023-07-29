@@ -3,7 +3,7 @@ use std::{collections::BTreeSet, fs, path::Path, str::FromStr};
 use anyhow::{Context, Result};
 use chrono::{TimeZone, Utc};
 use helixlauncher_meta::{
-	component::{Component, ComponentDependency, ConditionalClasspathEntry, Download, Dependencies},
+	component::{Component, ComponentDependency, ConditionalClasspathEntry, Download},
 	index::Index,
 	util::GradleSpecifier,
 };
@@ -72,20 +72,22 @@ pub async fn process(client: &Client) -> Result<()> {
 			release_time,
 			version: loader_version,
 			traits: BTreeSet::new(),
-			dependencies: Dependencies {
-				conflicts: vec![],
-				optional: vec![],
-				requires: vec![
-					ComponentDependency {
-						id: "net.minecraft".into(),
-						version: None,
-					},
-					ComponentDependency {
-						id: "net.fabricmc.intermediary".into(),
-						version: None,
-					},
-				],
-			},
+			conflicts: vec![],
+			requires: vec![
+				ComponentDependency {
+					id: "net.minecraft".into(),
+					version: None,
+				},
+				ComponentDependency {
+					id: "net.fabricmc.intermediary".into(),
+					version: None,
+				},
+			],
+			before: vec![ComponentDependency {
+				id: "net.minecraft".into(),
+				version: None,
+			}],
+			after: vec![],
 			game_jar: None,
 			main_class: Some(response.mainClass.client),
 			game_arguments: vec![],

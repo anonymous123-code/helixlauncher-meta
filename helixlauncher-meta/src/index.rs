@@ -19,17 +19,14 @@ pub struct IndexEntry {
 	pub conflicts: Vec<component::ComponentDependency>,
 	#[serde(skip_serializing_if = "Vec::is_empty", default)]
 	pub requires: Vec<component::ComponentDependency>,
-	#[serde(skip_serializing_if = "Vec::is_empty", default)]
-	pub optional: Vec<component::ComponentDependency>,
 }
 
 impl From<&component::Component> for IndexEntry {
 	fn from(component: &component::Component) -> Self {
 		Self {
 			version: component.version.to_string(),
-			conflicts: component.dependencies.conflicts.to_vec(),
-			requires: component.dependencies.requires.to_vec(),
-			optional: component.dependencies.optional.to_vec(),
+			conflicts: component.conflicts.to_vec(),
+			requires: component.requires.to_vec(),
 			release_time: component.release_time,
 		}
 	}
@@ -38,9 +35,8 @@ impl From<component::Component> for IndexEntry {
 	fn from(component: component::Component) -> Self {
 		Self {
 			version: component.version,
-			conflicts: component.dependencies.conflicts,
-			requires: component.dependencies.requires,
-			optional: component.dependencies.optional,
+			conflicts: component.conflicts,
+			requires: component.requires,
 			release_time: component.release_time,
 		}
 	}

@@ -99,14 +99,16 @@ fn process_version(file: &fs::DirEntry, out_base: &Path) -> Result<helix::compon
 		format_version: 1,
 		id: "net.minecraftforge.forge".into(),
 		version: forge_version.into(),
-		dependencies: helix::component::Dependencies {
-			requires: vec![helix::component::ComponentDependency {
-				id: "net.minecraft".into(),
-				version: Some(minecraft_version),
-			}],
-			conflicts: vec![],
-			optional: vec![],
-		},
+		requires: vec![helix::component::ComponentDependency {
+			id: "net.minecraft".into(),
+			version: Some(minecraft_version),
+		}],
+		before: vec![helix::component::ComponentDependency {
+			id: "net.minecraft".into(),
+			version: None,
+		}],
+		after: vec![],
+		conflicts: vec![],
 		traits: BTreeSet::new(),
 		assets: None,
 		provides: vec![],

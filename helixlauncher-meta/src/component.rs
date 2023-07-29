@@ -131,15 +131,6 @@ pub enum MinecraftArgument {
 	},
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct Dependencies {
-	#[serde(skip_serializing_if = "Vec::is_empty", default)]
-	pub requires: Vec<ComponentDependency>,
-	#[serde(skip_serializing_if = "Vec::is_empty", default)]
-	pub conflicts: Vec<ComponentDependency>,
-	pub optional: Vec<ComponentDependency>,
-}
-
 #[skip_serializing_none]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(deny_unknown_fields)]
@@ -147,7 +138,14 @@ pub struct Component {
 	pub format_version: u32,
 	pub id: String,
 	pub version: String,
-	pub dependencies: Dependencies,
+	#[serde(skip_serializing_if = "Vec::is_empty", default)]
+	pub requires: Vec<ComponentDependency>,
+	#[serde(skip_serializing_if = "Vec::is_empty", default)]
+	pub conflicts: Vec<ComponentDependency>,
+	#[serde(skip_serializing_if = "Vec::is_empty", default)]
+	pub before: Vec<ComponentDependency>,
+	#[serde(skip_serializing_if = "Vec::is_empty", default)]
+	pub after: Vec<ComponentDependency>,
 	#[serde(skip_serializing_if = "Vec::is_empty", default)]
 	pub provides: Vec<ComponentDependency>,
 	#[serde(skip_serializing_if = "BTreeSet::is_empty", default)]

@@ -12,7 +12,7 @@ use anyhow::{bail, ensure, Context, Result};
 use chrono::{DateTime, Utc};
 use data_encoding::HEXLOWER;
 use futures::{StreamExt, TryStreamExt};
-use helix::component::{ConditionFeature, MinecraftArgument, Dependencies};
+use helix::component::{ConditionFeature, MinecraftArgument};
 use indexmap::{IndexMap, IndexSet};
 use lazy_static::lazy_static;
 use maven_version::Maven3ArtifactVersion;
@@ -657,7 +657,10 @@ pub fn process_version(
 		traits,
 		assets: version.asset_index.map(|a| a.into()),
 		version: version.id.to_owned(),
-		dependencies: Dependencies::default(), // TODO: lwjgl 2 (deal with that later)
+		requires: vec![], // TODO: lwjgl 2 (deal with that later)
+		conflicts: vec![],
+		before: vec![],
+		after: vec![],
 		provides: vec![],
 		downloads: downloads.into_values().collect(),
 		classpath: classpath.into_iter().collect(),
